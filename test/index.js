@@ -42,7 +42,11 @@ describe("/people", function () {
     .expect('Content-Type', /json/)
     .expect(200)
     .expect(function (req) {
-      expect(req.body).to.deep.equal([]);
+      var body = req.body;
+      expect(body).to.have.length(1);
+      for (var prop in body[0]) {
+        expect(body).to.have.property(prop, body[0][prop]);
+      }
     })
     .end(function(err, res){
       if (err) return done(err);
