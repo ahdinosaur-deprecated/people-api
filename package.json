@@ -1,0 +1,33 @@
+{
+  "name": "circles.open.app",
+  "version": "0.0.0",
+  "description": "circles app of open app ecosystem",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "mocha --recursive test",
+    "develop": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ahdinosaur/circles.open.app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ahdinosaur/circles.open.app/issues"
+  },
+  "homepage": "https://github.com/ahdinosaur/circles.open.app",
+  "dependencies": {
+    "express": "^4.2.0",
+    "levelgraph": "^0.8.2",
+    "levelgraph-jsonld": "^0.3.1",
+    "body-parser": "^1.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^1.18.2",
+    "supertest": "^0.12.1",
+    "chai": "^1.9.1",
+    "nodemon": "^1.0.19"
+  }
+}
