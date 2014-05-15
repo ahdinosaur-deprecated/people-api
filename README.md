@@ -1,14 +1,14 @@
-# circles.open.app
+# people.open.app
 
-circles app of open app ecosystem
+people app of open app ecosystem
 
 ## how to
 
 ### install
 
 ```bash
-git clone https://github.com/ahdinosaur/circles.open.app
-cd circles.open.app
+git clone https://github.com/ahdinosaur/people.open.app
+cd people.open.app
 npm install
 ```
 

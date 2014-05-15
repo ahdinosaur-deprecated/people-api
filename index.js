@@ -2,39 +2,71 @@ var express = require('express');
 var levelgraph = require('levelgraph');
 var jsonld = require('levelgraph-jsonld');
 
+var context = require('./context');
+
 var app = express();
-var db = jsonld(levelgraph('./db'));
 
 app.use(require('body-parser')());
 
-app.get('/groups', function (req, res, next) {
-  // use db.search
-  res.json(200, { name: "GET /groups"});
-});
+module.exports = function service (db) {
 
-app.post('/groups', function (req, res, next) {
-  var body = req.body;
-  // use db.jsonld.put(body, function (err, obj) {})
-  res.json(200, { name: "POST /groups"});
-});
+  db = jsonld(levelgraph(db));
 
-app.get('/groups/:id', function (req, res, next) {
-  var id = req.params.id;
-  // use db.jsonld.get(id, context, function (err, obj) {})
-  res.json(200, { name: "GET /groups" + id });
-});
+  app.get('/people', function (req, res, next) {
+    
+    // search for all People
+    
+    db.search({
+      subject: db.v("@id"),
+      predicate: "@type",
+      object: "foaf:Person",
+    }, function (err, people) {
+      // TODO handle error better
+      if (err) { return next(err); }
 
-app.put('/groups/:id', function (req, res, next) {
-  var id = req.params.id;
-  var body = req.body;
-  // use db.jsonld.put(body, function (err, obj) {})
-  res.json(200, { name: "PUT /groups/" + id });
-});
+      // return success and people
+      res.json(200, people);
+    });
+  });
 
-app.delete('/groups/:id', function (req, res, next) {
-  var id = req.params.id;
-  // use db.jsonld.del(id, function (err) {})
-  res.json(200, { name: "DELETE /groups" + id });
-});
+  app.post('/people', function (req, res, next) {
+    var body = req.body;
 
-module.exports = app;
+    body["@type"] = "foaf:Person";
+
+    db.jsonld.put(body, function (err, obj) {
+      // TODO handle error better
+      if (err) { return next(err); }
+
+      // return success and person
+      res.json(200, obj);
+    })
+  });
+
+  app.get('/people/:id', function (req, res, next) {
+    var id = req.params.id;
+
+    db.jsonld.get(id, context, function (err, obj) {
+      // TODO handle error better
+      if (err) { return next(err); }
+      if (!obj) { return res.json(404); }
+
+      res.json(200, obj);
+    })
+  });
+
+  app.put('/people/:id', function (req, res, next) {
+    var id = req.params.id;
+    var body = req.body;
+    // use db.jsonld.put(body, function (err, obj) {})
+    res.json(200, { name: "PUT /people/" + id });
+  });
+
+  app.delete('/people/:id', function (req, res, next) {
+    var id = req.params.id;
+    // use db.jsonld.del(id, function (err) {})
+    res.json(200, { name: "DELETE /people" + id });
+  });
+
+  return app;
+};
