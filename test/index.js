@@ -45,7 +45,7 @@ describe("/people", function () {
       var body = req.body;
       expect(body).to.have.length(1);
       for (var prop in body[0]) {
-        expect(body).to.have.property(prop, body[0][prop]);
+        expect(body[0]).to.have.property(prop, body[0][prop]);
       }
     })
     .end(function(err, res){

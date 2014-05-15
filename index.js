@@ -14,11 +14,12 @@ module.exports = function service (db) {
 
   app.get('/people', function (req, res, next) {
     
+    // TODO use searchStream and paginate
+    // TODO get persons of @ids
     // search for all People
-    
     db.search({
       subject: db.v("@id"),
-      predicate: "@type",
+      predicate: "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
       object: "foaf:Person",
     }, function (err, people) {
       // TODO handle error better
