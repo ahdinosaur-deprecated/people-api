@@ -9,6 +9,7 @@ circles app of open app ecosystem
 ```bash
 git clone https://github.com/ahdinosaur/circles.open.app
 cd circles.open.app
+npm install
 ```
 
 ### run
