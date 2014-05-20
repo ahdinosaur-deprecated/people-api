@@ -39,7 +39,7 @@ module.exports = service = (db) ->
     db.jsonld.put body, (err, obj) ->
       
       # TODO handle error better
-      return next(err)  if err
+      return next(err) if err
       
       # return created and person
       res.json 201, obj
@@ -52,7 +52,9 @@ module.exports = service = (db) ->
       # TODO handle error better
       return next(err) if err
 
-      return res.json(404) unless obj
+      return res.json(404, {
+        error: "could not find @id " + id
+      }) if !obj
 
       res.json 200, obj
 
@@ -84,7 +86,9 @@ module.exports = service = (db) ->
       # TODO handle error better
       return next(err) if err
 
-      return res.json(404) unless oldObj
+      return res.json(404, {
+        error: "could not find @id " + id
+      }) unless oldObj
 
       newObj = _.extend(oldObj, updates);
 
@@ -99,12 +103,12 @@ module.exports = service = (db) ->
   app.delete "/people/:id", (req, res, next) ->
 
     id = req.params.id
-    
+
     db.jsonld.del id, (err) ->
 
       # TODO handle error better
       return next(err) if err
 
-      res.json 204
+      res.send 204
 
   app

@@ -4,9 +4,9 @@ urlencode = require("urlencode")
 
 app = undefined
 db = undefined
-person = undefined
+person = undefined 
 
-describe "/people", ->
+describe "#people", ->
   before ->
     db = require("level-test")()("testdb")
     app = require("../src")(db)
@@ -93,8 +93,7 @@ describe "/people", ->
 
   it "should DELETE /people/:id", (done) ->
     request(app)
-    .delete("/people/" + urlencode(person["@id"]))
-    .expect("Content-Type", /json/)
+    .del("/people/" + urlencode(person["@id"]))
     .expect(204)
     .end((err, res) ->
       return done(err) if err
