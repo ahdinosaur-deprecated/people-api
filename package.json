@@ -6,9 +6,12 @@
   "scripts": {
     "build": "coffee -o lib -c src",
     "watch": "coffee -o lib -cw src",
+    "build-test": "coffee -c test",
     "start": "npm run build && node server.js",
-    "test": "mocha --compilers coffee:coffee-script/register --recursive test",
-    "develop": "npm run build && (nodemon server & npm run watch)"
+    "test": "npm run build-test && mocha --recursive test",
+    "develop": "npm run build && (nodemon server & npm run watch)",
+    "coverage": "rm -rf coverage; npm run build-test && istanbul cover _mocha -- --recursive --reporter spec --bail",
+    "publish-coverage": "cat coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",

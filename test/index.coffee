@@ -9,7 +9,7 @@ person = undefined
 describe "#people", ->
   before ->
     db = require("level-test")()("testdb")
-    app = require("../src")(db)
+    app = require("../")(db)
     return
 
   it "should POST /people", (done) ->
