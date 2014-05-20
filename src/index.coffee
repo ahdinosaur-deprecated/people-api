@@ -1,6 +1,7 @@
 express = require("express")
 levelgraph = require("levelgraph")
 jsonld = require("levelgraph-jsonld")
+_ = require('lodash')
 
 context = require("./context")
 
@@ -40,8 +41,8 @@ module.exports = service = (db) ->
       # TODO handle error better
       return next(err)  if err
       
-      # return success and person
-      res.json 200, obj
+      # return created and person
+      res.json 201, obj
 
   app.get "/people/:id", (req, res, next) ->
     id = req.params.id
@@ -50,24 +51,60 @@ module.exports = service = (db) ->
       
       # TODO handle error better
       return next(err) if err
+
       return res.json(404) unless obj
 
       res.json 200, obj
 
-
   app.put "/people/:id", (req, res, next) ->
     id = req.params.id
     body = req.body
-    
-    # use db.jsonld.put(body, function (err, obj) {})
-    res.json 200,
-      name: "PUT /people/" + id
+
+    body["@type"] = "foaf:Person"
+
+    if body['@id'] isnt id
+      return res.json 400,
+        error: "id in route does not match @id in body"
+
+    db.jsonld.put body, (err, obj) ->
+
+      # TODO handle error better
+      return next(err) if err
+
+      res.json 200, obj
+
+  app.patch "/people/:id", (req, res, next) ->
+    id = req.params.id
+    updates = req.body
+
+    body["@type"] = "foaf:Person"
+
+    db.jsonld.get id, context, (err, oldObj) ->
+
+      # TODO handle error better
+      return next(err) if err
+
+      return res.json(404) unless oldObj
+
+      newObj = _.extend(oldObj, updates);
+
+      db.jsonld.put newObj, (err, obj) ->
+
+        # TODO handle error better
+        return next(err)  if err
+
+        res.json 200, obj
+
 
   app.delete "/people/:id", (req, res, next) ->
+
     id = req.params.id
     
-    # use db.jsonld.del(id, function (err) {})
-    res.json 200,
-      name: "DELETE /people" + id
+    db.jsonld.del id, (err) ->
+
+      # TODO handle error better
+      return next(err) if err
+
+      res.json 204
 
   app

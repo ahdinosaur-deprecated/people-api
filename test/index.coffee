@@ -21,7 +21,7 @@ describe "/people", ->
     .post("/people")
     .send(person)
     .expect("Content-Type", /json/)
-    .expect(200).expect((req) ->
+    .expect(201).expect((req) ->
       body = req.body
 
       expect(body).to.have.property "@type", "foaf:Person"
@@ -29,9 +29,10 @@ describe "/people", ->
         expect(body).to.have.property prop, body[prop]
       return
     )
-    .end (err, res) ->
+    .end((err, res) ->
       return done(err) if err
       done()
+    )
 
   it "should GET /people", (done) ->
     request(app)
@@ -46,9 +47,10 @@ describe "/people", ->
         expect(body[0]).to.have.property prop, body[0][prop]
       return
     )
-    .end (err, res) ->
+    .end((err, res) ->
       return done(err)  if err
       done()
+    )
 
   it "should GET /people/:id", (done) ->
     request(app)
@@ -63,6 +65,48 @@ describe "/people", ->
         expect(body).to.have.property prop, body[prop]
       return
     )
-    .end (err, res) ->
+    .end((err, res) ->
       return done(err)  if err
       done()
+    )
+
+  it "should PUT /people/:id", (done) ->
+    person["name"] = "Mikey Williams"
+
+    request(app)
+    .put("/people/" + urlencode(person["@id"]))
+    .send(person)
+    .expect("Content-Type", /json/)
+    .expect(200)
+    .expect( (req) ->
+      body = req.body
+
+      expect(body).to.have.property "@type", "foaf:Person"
+      for prop of body
+        expect(body).to.have.property prop, body[prop]
+      return
+    )
+    .end((err, res) ->
+      return done(err) if err
+      done()
+    )
+
+  it "should DELETE /people/:id", (done) ->
+    request(app)
+    .delete("/people/" + urlencode(person["@id"]))
+    .expect("Content-Type", /json/)
+    .expect(204)
+    .end((err, res) ->
+      return done(err) if err
+      done()
+    )
+
+  it "should not GET deleted id", (done) ->
+    request(app)
+    .get("/people/" + urlencode(person["@id"]))
+    .expect("Content-Type", /json/)
+    .expect(404)
+    .end((err, res) ->
+      return done(err)  if err
+      done()
+    )

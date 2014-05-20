@@ -26,7 +26,8 @@
     "levelgraph-jsonld": "^0.3.1",
     "body-parser": "^1.2.0",
     "urlencode": "^0.2.0",
-    "level": "^0.18.0"
+    "level": "^0.18.0",
+    "lodash": "^2.4.1"
   },
   "devDependencies": {
     "level-test": "^1.6.3",
