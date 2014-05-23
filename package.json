@@ -8,7 +8,7 @@
     "watch": "coffee -o lib -cw src",
     "build-test": "coffee -c test",
     "start": "npm run build && node server.js",
-    "test": "npm run build-test && mocha --recursive test",
+    "test": "npm run build && npm run build-test && mocha --recursive test",
     "develop": "npm run build && (nodemon server & npm run watch)",
     "coverage": "rm -rf coverage; npm run build-test && istanbul cover _mocha -- --recursive --reporter spec --bail",
     "publish-coverage": "cat coverage/lcov.info | coveralls"
@@ -24,10 +24,9 @@
   },
   "homepage": "https://github.com/ahdinosaur/people.open.app",
   "dependencies": {
-    "express": "^4.2.0",
+    "feathers": "~0.4.0",
     "levelgraph": "^0.8.2",
     "levelgraph-jsonld": "^0.3.1",
-    "body-parser": "^1.2.0",
     "urlencode": "^0.2.0",
     "level": "^0.18.0",
     "lodash": "^2.4.1"
