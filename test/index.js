@@ -21,13 +21,13 @@
     });
     it("should POST /people", function(done) {
       person = {
-        "@id": "http://dinosaur.is#i",
+        id: "http://dinosaur.is#i",
         name: "Michael Williams"
       };
       return request(app).post("/people").send(person).expect("Content-Type", /json/).expect(201).expect(function(req) {
         var body, prop;
         body = req.body;
-        expect(body).to.have.property("@type", "foaf:Person");
+        expect(body).to.have.property("type", "foaf:Person");
         for (prop in body) {
           expect(body).to.have.property(prop, body[prop]);
         }
@@ -54,10 +54,10 @@
       });
     });
     it("should GET /people/:id", function(done) {
-      return request(app).get("/people/" + urlencode(person["@id"])).expect("Content-Type", /json/).expect(200).expect(function(req) {
+      return request(app).get("/people/" + urlencode(person.id)).expect("Content-Type", /json/).expect(200).expect(function(req) {
         var body, prop;
         body = req.body;
-        expect(body).to.have.property("@type", "foaf:Person");
+        expect(body).to.have.property("type", "foaf:Person");
         for (prop in body) {
           expect(body).to.have.property(prop, body[prop]);
         }
@@ -70,10 +70,10 @@
     });
     it("should PUT /people/:id", function(done) {
       person["name"] = "Mikey Williams";
-      return request(app).put("/people/" + urlencode(person["@id"])).send(person).expect("Content-Type", /json/).expect(200).expect(function(req) {
+      return request(app).put("/people/" + urlencode(person.id)).send(person).expect("Content-Type", /json/).expect(200).expect(function(req) {
         var body, prop;
         body = req.body;
-        expect(body).to.have.property("@type", "foaf:Person");
+        expect(body).to.have.property("type", "foaf:Person");
         for (prop in body) {
           expect(body).to.have.property(prop, body[prop]);
         }
@@ -85,7 +85,7 @@
       });
     });
     it("should DELETE /people/:id", function(done) {
-      return request(app).del("/people/" + urlencode(person["@id"])).expect(204).end(function(err, res) {
+      return request(app).del("/people/" + urlencode(person.id)).expect(204).end(function(err, res) {
         if (err) {
           return done(err);
         }
@@ -93,7 +93,7 @@
       });
     });
     return it("should not GET deleted id", function(done) {
-      return request(app).get("/people/" + urlencode(person["@id"])).expect("Content-Type", /json/).expect(404).end(function(err, res) {
+      return request(app).get("/people/" + urlencode(person.id)).expect("Content-Type", /json/).expect(404).end(function(err, res) {
         if (err) {
           return done(err);
         }

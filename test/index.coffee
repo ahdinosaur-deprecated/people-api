@@ -14,7 +14,7 @@ describe "#people", ->
 
   it "should POST /people", (done) ->
     person =
-      "@id": "http://dinosaur.is#i"
+      id: "http://dinosaur.is#i"
       name: "Michael Williams"
 
     request(app)
@@ -24,7 +24,7 @@ describe "#people", ->
     .expect(201).expect((req) ->
       body = req.body
 
-      expect(body).to.have.property "@type", "foaf:Person"
+      expect(body).to.have.property "type", "foaf:Person"
       for prop of body
         expect(body).to.have.property prop, body[prop]
       return
@@ -54,13 +54,13 @@ describe "#people", ->
 
   it "should GET /people/:id", (done) ->
     request(app)
-    .get("/people/" + urlencode(person["@id"]))
+    .get("/people/" + urlencode(person.id))
     .expect("Content-Type", /json/)
     .expect(200)
     .expect((req) ->
       body = req.body
 
-      expect(body).to.have.property "@type", "foaf:Person"
+      expect(body).to.have.property "type", "foaf:Person"
       for prop of body
         expect(body).to.have.property prop, body[prop]
       return
@@ -74,14 +74,14 @@ describe "#people", ->
     person["name"] = "Mikey Williams"
 
     request(app)
-    .put("/people/" + urlencode(person["@id"]))
+    .put("/people/" + urlencode(person.id))
     .send(person)
     .expect("Content-Type", /json/)
     .expect(200)
     .expect( (req) ->
       body = req.body
 
-      expect(body).to.have.property "@type", "foaf:Person"
+      expect(body).to.have.property "type", "foaf:Person"
       for prop of body
         expect(body).to.have.property prop, body[prop]
       return
@@ -93,7 +93,7 @@ describe "#people", ->
 
   it "should DELETE /people/:id", (done) ->
     request(app)
-    .del("/people/" + urlencode(person["@id"]))
+    .del("/people/" + urlencode(person.id))
     .expect(204)
     .end((err, res) ->
       return done(err) if err
@@ -102,7 +102,7 @@ describe "#people", ->
 
   it "should not GET deleted id", (done) ->
     request(app)
-    .get("/people/" + urlencode(person["@id"]))
+    .get("/people/" + urlencode(person.id))
     .expect("Content-Type", /json/)
     .expect(404)
     .end((err, res) ->

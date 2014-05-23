@@ -1,11 +1,14 @@
-levelgraph = require("levelgraph")
-jsonld = require("levelgraph-jsonld")
+levelgraph = require('levelgraph')
+levelgraphJsonld = require('levelgraph-jsonld')
+jsonld = require('jsonld')
 _ = require('lodash')
 
-context = require("./context")
+context = require('./context')
+alias = require('./utils/alias')
+hasType = require('./utils/hasType')
 
 module.exports = service = (db) ->
-  db = jsonld(levelgraph(db))
+  db = levelgraphJsonld(levelgraph(db))
 
   return {
     find: (params, callback) ->
@@ -35,7 +38,7 @@ module.exports = service = (db) ->
 
         # if person not found, return 404
         if not person
-          err = new Error("could not find @id " + id)
+          err = new Error("could not find id " + id)
           err.status = 404
           return callback(err)
 
@@ -45,7 +48,14 @@ module.exports = service = (db) ->
 
     create: (data, params, callback) ->
 
-      data["@type"] = "foaf:Person"
+      # alias type to @type
+      data = alias(data, "type", "@type")
+
+      # ensure @type has "foaf:Person"
+      data = hasType(data, "foaf:Person")
+      
+      # alias id to @id
+      data = alias(data, "id", "@id")
 
       db.jsonld.put data, (err, person) ->
         
@@ -53,16 +63,23 @@ module.exports = service = (db) ->
         return callback(err) if err
         
         # return person
-        callback(null, person)
+        jsonld.compact(person, context, callback)
 
 
     update: (id, data, params, callback) ->
 
-      data["@type"] = "foaf:Person"
+      # alias type to @type
+      data = alias(data, "type", "@type")
+
+      # ensure @type has "foaf:Person"
+      data = hasType(data, "foaf:Person")
+
+      # alias id to @id
+      data = alias(data, "id", "@id")
 
       # if id in route doesn't match id in data, return 400
-      if data['@id'] isnt id
-        err = new Error("id in route does not match @id in data")
+      if data["@id"] isnt id
+        err = new Error("id in route does not match id in data")
         err.status = 400
         return callback(err)
 
@@ -73,10 +90,23 @@ module.exports = service = (db) ->
         return callback(err) if err
 
         # return person
-        callback(null, person)
+        jsonld.compact(person, context, callback)
 
     patch: (id, data, params, callback) ->
-      data["@type"] = "foaf:Person"
+      # alias type to @type
+      data = alias(data, "type", "@type")
+
+      # ensure @type has "foaf:Person"
+      data = hasType(data, "foaf:Person")
+
+      # alias id to @id
+      data = alias(data, "id", "@id")
+
+      # if id in route doesn't match id in data, return 400
+      if data["@id"] isnt id
+        err = new Error("id in route does not match id in data")
+        err.status = 400
+        return callback(err)
 
       # get existing Person by id in database
       db.jsonld.get id, context, (err, oldPerson) ->
@@ -100,7 +130,7 @@ module.exports = service = (db) ->
           return callback(err) if err
 
           # return person
-          callback(null, person)
+          jsonld.compact(person, context, callback)
 
     remove: (id, params, callback) ->
 

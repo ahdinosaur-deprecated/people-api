@@ -1,5 +1,9 @@
 module.exports =
   "@language": "en"
+
+  # aliases
+  id: "@id",
+  type: "@type",
   
   # prefixes
   circles: "http://circles.app.enspiral.com/"
