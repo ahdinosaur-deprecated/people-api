@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/ahdinosaur/people.open.app",
   "dependencies": {
-    "feathers": "~0.4.0",
+    "feathers": "git://github.com/ahdinosaur/feathers",
     "levelgraph": "^0.8.2",
     "levelgraph-jsonld": "^0.3.1",
     "urlencode": "^0.2.0",
