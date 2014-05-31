@@ -19,7 +19,7 @@ module.exports = (db) ->
     next()
   .use (err, req, res, next) ->
 
-    res.status(err.status or 500)
+    res.status = err.status or 500
 
     res.format
 
