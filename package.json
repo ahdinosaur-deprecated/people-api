@@ -1,6 +1,6 @@
 {
   "name": "open-app-people-api",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "People API of Open App Ecosystem",
   "main": "lib/index.js",
   "scripts": {
@@ -11,7 +11,8 @@
     "test": "npm run build && npm run build-test && mocha --recursive test",
     "develop": "npm run build && (nodemon server & npm run watch)",
     "coverage": "rm -rf coverage; npm run build-test && istanbul cover _mocha -- --recursive --reporter spec --bail",
-    "publish-coverage": "cat coverage/lcov.info | coveralls"
+    "publish-coverage": "cat coverage/lcov.info | coveralls",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
