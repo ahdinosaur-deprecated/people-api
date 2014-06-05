@@ -1,6 +1,6 @@
 {
   "name": "open-app-people-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "People API of Open App Ecosystem",
   "main": "lib/index.js",
   "scripts": {
@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/open-app/people-api",
   "dependencies": {
-    "feathers": "git://github.com/open-app/feathers",
+    "feathers": "^0.4.0",
     "levelgraph": "^0.8.2",
     "levelgraph-jsonld": "^0.3.1",
     "urlencode": "^0.2.0",
