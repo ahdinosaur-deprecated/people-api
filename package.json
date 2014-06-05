@@ -1,7 +1,7 @@
 {
-  "name": "people.open.app",
-  "version": "0.0.0",
-  "description": "people app of open app ecosystem",
+  "name": "open-app-people-api",
+  "version": "0.1.0",
+  "description": "People API of Open App Ecosystem",
   "main": "lib/index.js",
   "scripts": {
     "build": "coffee -o lib -c src",
@@ -15,16 +15,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ahdinosaur/people.open.app.git"
+    "url": "git://github.com/open-app/people-api.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "open-app",
+  "license": "AGPLv3",
   "bugs": {
-    "url": "https://github.com/ahdinosaur/people.open.app/issues"
+    "url": "https://github.com/open-app/people-api/issues"
   },
-  "homepage": "https://github.com/ahdinosaur/people.open.app",
+  "homepage": "https://github.com/open-app/people-api",
   "dependencies": {
-    "feathers": "git://github.com/ahdinosaur/feathers",
+    "feathers": "git://github.com/open-app/feathers",
     "levelgraph": "^0.8.2",
     "levelgraph-jsonld": "^0.3.1",
     "urlencode": "^0.2.0",
