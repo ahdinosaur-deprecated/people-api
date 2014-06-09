@@ -1,6 +1,6 @@
 {
   "name": "open-app-people-api",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "People API of Open App Ecosystem",
   "main": "lib/index.js",
   "scripts": {
