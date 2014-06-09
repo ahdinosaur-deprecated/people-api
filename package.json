@@ -34,11 +34,13 @@
     "jsonld": "~0.2.8"
   },
   "devDependencies": {
+    "chai": "^1.9.1",
+    "coffee-script": "^1.7.1",
+    "coveralls": "^2.10.0",
+    "istanbul": "^0.2.10",
     "level-test": "^1.6.3",
     "mocha": "^1.18.2",
-    "supertest": "^0.12.1",
-    "chai": "^1.9.1",
     "nodemon": "^1.0.19",
-    "coffee-script": "^1.7.1"
+    "supertest": "^0.12.1"
   }
 }
