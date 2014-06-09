@@ -1,3 +1,4 @@
+[![ready issues](https://badge.waffle.io/open-app/people-api.png?label=ready&title=Ready)](https://waffle.io/open-app/people-api)
 [![server tests](https://travis-ci.org/open-app/people-api.png)](https://travis-ci.org/open-app/people-api)
 [![test coverage](https://img.shields.io/coveralls/open-app/people-api.svg)](https://coveralls.io/r/open-app/people-api)
 [![npm version](https://badge.fury.io/js/open-app-people-api.png)](https://npmjs.org/package/open-app-people-api)
