@@ -1,34 +1,33 @@
 {
-  "name": "oa-people-api",
+  "name": "oa-people-service",
   "version": "0.2.0",
-  "description": "OpenApp /people API",
+  "description": "OpenApp people service",
   "main": "lib/index.js",
   "scripts": {
     "migrate": "bin/migrate",
     "start": "node server.js",
-    "test": "(export NODE_ENV=test; npm run migrate && mocha --recursive test)",
-    "develop": "nodemon server",
+    "test": "(export NODE_ENV=test; export DEBUG=*; npm run migrate && mocha --recursive test)",
+    "develop": "(export DEBUG=*; npm run migrate && nodemon server)",
     "coverage": "rm -rf coverage; istanbul cover _mocha -- --recursive --reporter spec --bail",
     "publish-coverage": "cat coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/open-app/people-api.git"
+    "url": "git://github.com/open-app/people-service.git"
   },
   "author": "open-app",
   "license": "AGPLv3",
   "bugs": {
-    "url": "https://github.com/open-app/people-api/issues"
+    "url": "https://github.com/open-app/people-service/issues"
   },
-  "homepage": "https://github.com/open-app/people-api",
+  "homepage": "https://github.com/open-app/people-service",
   "dependencies": {
     "bluebird": "^2.2.1",
     "body-parser": "^1.4.3",
+    "debug": "^1.0.3",
     "feathers": "^1.0.0-pre.5",
-    "jsonld": "^0.2.15",
     "lodash": "^2.4.1",
-    "uberproto": "^1.1.2",
-    "urlencode": "^0.2.0"
+    "uberproto": "^1.1.2"
   },
   "devDependencies": {
     "bookshelf": "^0.7.6",

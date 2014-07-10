@@ -6,7 +6,6 @@ var Promise = require('bluebird');
 var Knex = require('knex');
 var Bookshelf = require('bookshelf');
 var feathers = require('feathers');
-var errors = feathers.errors.types;
 var _ = require('lodash');
 
 var bob = {
@@ -38,21 +37,27 @@ var checkPerson = function (actual, expected) {
 };
 
 describe("#PersonService", function () {
-  var knex, bookshelf, Person, api;
+  var knex, bookshelf, Person, Group, app;
 
   before(function () {
     var env = process.env.node_env || 'test';
     knex = Knex(require('../knexfile')[env]);
     bookshelf = require('bookshelf')(knex)
 
-    require('oa-group-db')(bookshelf)
     Person = require('oa-person-db')(bookshelf);
-    api = require('../')(Person);
+    Group = require('oa-group-db')(bookshelf)
+    
+    app = feathers()
+    .use(require('body-parser')())
+    .configure(feathers.rest())
+    .use('/people', require('../')(Person))
+    .configure(feathers.errors())
+    .setup()
+    ;
 
-    request = request(api);
+    request = request(app);
   });
 
-  /*
   it("should create Person", function () {
     var id;
 
@@ -63,7 +68,7 @@ describe("#PersonService", function () {
     .expect(201)
     .then(function (res) {
       var person = res.body;
-      expect(person).to.have.deep.property("@context", Person.context);
+      expect(person['@context']).to.deep.equal(Person.context);
       checkPerson(person, bob)
       id = person.id;
     })
@@ -71,11 +76,10 @@ describe("#PersonService", function () {
       return Person.forge({ id: id }).fetch();
     })
     .then(function (person) {
-      checkPerson(person, bob);
+      checkPerson(person.toJSON(), bob);
     })
     ;
   });
-  */
 
   it("should get all Persons", function () {
 
@@ -85,6 +89,7 @@ describe("#PersonService", function () {
       .get("/people")
       .expect("Content-Type", /json/)
       .expect(200)
+      ;
     })
     .then(function (res) {
       var people = res.body;
@@ -96,27 +101,19 @@ describe("#PersonService", function () {
     ;
   });
 
-  /*
   it("should get a person", function () {
 
     return Person.forge().save(bob)
-    .then(function () {
+    .then(function (model) {
       return request
-      .get("/people/" + stooge.key)
-      .expect(200);
+      .get("/people/" + model.id)
+      .expect(200)
+      ;
     })
     .then(function (res) {
-      var thePerson = res.body;
-
-      expect(thePerson["@context"]).to.deep.equal(Person.context);
-      expect(thePerson).to.have.property("id");
-      expect(thePerson).to.have.property("type", "Person");      
-     
-      delete thePerson['@context'];
-      delete thePerson.id;
-      delete thePerson.type;
-
-      expect(thePerson).to.deep.equal(bob);
+      var person = res.body;
+      expect(person['@context']).to.deep.equal(Person.context);
+      checkPerson(person, bob)
     });
   });
 
@@ -128,48 +125,52 @@ describe("#PersonService", function () {
     };
 
     return Person.forge().save(bob)
-    .then(function () {
+    .then(function (model) {
       return request
-      .put("/people/" + stooge.key)
+      .put("/people/" + model.id)
       .send(newData)
-      .expect(200);
+      .expect(200)
+      ;
     })
     .then(function (res) {
-      var updatedPerson = res.body;
-
-      expect(updatedPerson["@context"]).to.deep.equal(Person.context);
-      expect(updatedPerson).to.have.property("id");
-      expect(updatedPerson).to.have.property("type", "Person");      
-     
-      delete updatedPerson['@context'];
-      delete updatedPerson.id;
-      delete updatedPerson.type;
-
-      expect(updatedPerson).to.deep.equal(newData);
+      var person = res.body;
+      expect(person['@context']).to.deep.equal(Person.context);
+      checkPerson(person, newData)
     });
   });
 
   it("should delete a person", function () {
+    var id;
 
     return Person.forge().save(bob)
-    .then(function () {
-      // delete bob with API
+    .then(function (model) {
+      id = model.id
+
+      // delete bob with api
       return request
-      .delete("/people/" + stooge.key)
+      .delete("/people/" + id)
       .expect(204)
+      ;
     })
     .then(function (res) {
-      // get deleted bob
-      var get = Person.getAsync(stooge.key);
-      // TODO fix
-      //expect(get).to.be.rejectedWith(errors.NotFound);
-    });
+      // get deleted bob from database
+      return Person.forge({ id: id }).fetch()
+    })
+    .then(function (model) {
+      expect(model).to.not.exist;
+
+      // get deleted bob from api
+      return request
+      .get("/people/" + id)
+      .expect(404)
+      ;
+    })
+    ;
   });
 
   it("should batch create people", function () {
     // TODO
   })
-  */
 
   afterEach(function () {
     return Promise.all([
