@@ -1,0 +1,7 @@
+#!/bin/bash
+
+APIS=$(ls node_modules | grep -E "oa-[^/]*-db")
+for API in $APIS
+do
+  ./node_modules/.bin/knex --knexfile="./node_modules/$API/knexfile.js" --cwd="." migrate:latest
+done 

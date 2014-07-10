@@ -3,9 +3,7 @@ node_modules
 
 .DS_Store
 
-/lib
-/db
-/test/**/*.js
+*.sqlite3
 
 /coverage
 .coveralls.yml

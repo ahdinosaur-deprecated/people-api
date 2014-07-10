@@ -1,18 +1,15 @@
 {
-  "name": "open-app-people-api",
-  "version": "0.1.3",
-  "description": "People API of Open App Ecosystem",
+  "name": "oa-people-api",
+  "version": "0.2.0",
+  "description": "OpenApp /people API",
   "main": "lib/index.js",
   "scripts": {
-    "build": "coffee -o lib -c src",
-    "watch": "coffee -o lib -cw src",
-    "build-test": "coffee -c test",
-    "start": "npm run build && node server.js",
-    "test": "npm run build && npm run build-test && mocha --recursive test",
-    "develop": "npm run build && (nodemon server & npm run watch)",
-    "coverage": "rm -rf coverage; npm run build-test && istanbul cover _mocha -- --recursive --reporter spec --bail",
-    "publish-coverage": "cat coverage/lcov.info | coveralls",
-    "prepublish": "npm run build"
+    "migrate": "bin/migrate",
+    "start": "node server.js",
+    "test": "(export NODE_ENV=test; npm run migrate && mocha --recursive test)",
+    "develop": "nodemon server",
+    "coverage": "rm -rf coverage; istanbul cover _mocha -- --recursive --reporter spec --bail",
+    "publish-coverage": "cat coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
@@ -25,22 +22,27 @@
   },
   "homepage": "https://github.com/open-app/people-api",
   "dependencies": {
-    "feathers": "^1.0.0-pre.1",
-    "levelgraph": "^0.8.2",
-    "levelgraph-jsonld": "^0.3.1",
-    "urlencode": "^0.2.0",
-    "level": "^0.18.0",
+    "bluebird": "^2.2.1",
+    "body-parser": "^1.4.3",
+    "feathers": "^1.0.0-pre.5",
+    "jsonld": "^0.2.15",
     "lodash": "^2.4.1",
-    "jsonld": "~0.2.8"
+    "uberproto": "^1.1.2",
+    "urlencode": "^0.2.0"
   },
   "devDependencies": {
+    "bookshelf": "^0.7.6",
     "chai": "^1.9.1",
-    "coffee-script": "^1.7.1",
-    "coveralls": "^2.10.0",
-    "istanbul": "^0.2.10",
-    "level-test": "^1.6.3",
-    "mocha": "^1.18.2",
-    "nodemon": "^1.0.19",
-    "supertest": "^0.12.1"
+    "chai-as-promised": "^4.1.1",
+    "coveralls": "^2.11.1",
+    "istanbul": "^0.2.16",
+    "knex": "^0.6.21",
+    "mocha": "^1.20.1",
+    "nodemon": "^1.2.1",
+    "oa-group-db": "git://github.com/open-app/group-db#0.2.0",
+    "oa-person-db": "git://github.com/open-app/person-db#0.2.0",
+    "sqlite3": "^2.2.3",
+    "supertest": "^0.12.1",
+    "supertest-as-promised": "^1.0.0"
   }
 }
