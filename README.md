@@ -7,6 +7,8 @@
 
 # people-api
 
+[![Join the chat at https://gitter.im/ahdinosaur-deprecated/people-api](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ahdinosaur-deprecated/people-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 #### prototype in progress
 
 People API of Open App Ecosystem
